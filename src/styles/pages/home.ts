@@ -5,7 +5,6 @@ export const HomeContainer = styled('main', {
     width: '100%',
     maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
     marginLeft: 'auto',
-
 })
 
 export const Product = styled('div', {
@@ -42,15 +41,37 @@ export const Product = styled('div', {
         opacity: 0,
         transition: 'all 0.2s ease-in-out',
 
-        strong: {
-            color: '$gray100',
-            fontSize: '$lg',
+        div: {
+            display: 'flex',
+            flexDirection: 'column',
+
+            strong: {
+                color: '$gray100',
+                fontSize: '$lg',
+            },
+    
+            span: {
+                fontSize: '$xl',
+                fontWeight: 'bold',
+                color: '$green300'
+            }
         },
 
-        span: {
-            fontSize: '$xl',
-            fontWeight: 'bold',
-            color: '$green300'
+        button: {
+            border: 0,
+            backgroundColor: '$green300',
+            transition: '0.2s',
+            padding: '1rem',
+            borderRadius: 6,
+            cursor: 'pointer',
+
+            svg: {
+                color: '$white',
+            },
+
+            '&:hover': {
+                backgroundColor: '$green500',
+            }
         }
     },
 
