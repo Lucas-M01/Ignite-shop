@@ -50,24 +50,66 @@ export const ProductDetails = styled('div', {
         color: '$gray300'
     },
 
-    button: {
-        marginTop: 'auto',
-        backgroundColor: '$green500',
-        border: 0,
-        color: '$white',
-        borderRadius: 8,
-        padding: '1.25rem',
-        cursor: 'pointer',
-        fontWeight: 'bold',
+    section: {
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '2rem',
         fontSize: '$md',
+        gap: '1rem',
+        height: '2rem',
+    },
 
-        '&:disabled': {
-            opacity: 0.6,
-            cursor: 'not-allowed',
-        },
+ 
+})
 
-        '&:not(:disabled):hover': {
-            backgroundColor: '$green300'
+export const Button = styled('button', {
+    variants: {
+        size: {
+            large: {
+                marginTop: 'auto',
+                backgroundColor: '$green500',
+                border: 0,
+                color: '$white',
+                borderRadius: 8,
+                padding: '1.25rem',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: '$md',
+            
+                '&:disabled': {
+                    opacity: 0.6,
+                    cursor: 'not-allowed',
+                },
+            
+                '&:not(:disabled):hover': {
+                    backgroundColor: '$green300'
+                }
+            },
+
+            medium: {
+                width: '100%',
+                height: '0.25rem',
+                border: 'none',
+                background: 'none',
+                textAlign: 'center',
+                color: '$white',
+                transition: '0.1s',
+                cursor: 'pointer',
+
+                svg: {
+                    color: '$white',
+                },
+                
+                '&:disabled': {
+                    opacity: '0.4',
+                    cursor: 'default',
+                },
+
+                '&:hover': {
+                    color: '$green500',
+                }
+            }
         }
     }
+
 })

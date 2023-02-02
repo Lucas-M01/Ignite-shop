@@ -38,6 +38,7 @@ export const Header = styled('header', {
             marginLeft: '-0.35rem',
             padding: '0.45rem',
             borderRadius: '50%',
+            minWidth: '1rem',
         },
 
         svg: {

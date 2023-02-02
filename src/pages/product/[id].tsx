@@ -2,21 +2,25 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Stripe from "stripe";
 import { stripe } from "../../lib/stripe";
-import { ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
+import { Button, ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
 import Head from "next/head";
+import { useCart } from "@/src/hook/useCart";
+import { QuantityInput } from "@/src/components/QuantityInput/QuantityInput";
 
-interface ProductProps {
+export interface ProductProps {
     product: {
         id: string;
         name: string;
         imageUrl: string;
-        price: string;
+        price: number;
         description: string;
         defaultPriceId: string;
     }
 }
 
 export default function Product({ product }: ProductProps) {
+    const { onAdd, decQty, incQty, qty } = useCart()
+
     return (
         <>
             <Head>
@@ -34,9 +38,13 @@ export default function Product({ product }: ProductProps) {
 
                     <p>{product.description}</p>
 
-                    <button>
+                    <section>
+                        Quantidade: <QuantityInput quantity={qty} onDecrease={decQty} onIncrease={incQty}/>
+                    </section>
+
+                    <Button size='large'>
                         Colocar na sacola
-                    </button>
+                    </Button>
                 </ProductDetails>
             </ProductContainer>   
         </>
