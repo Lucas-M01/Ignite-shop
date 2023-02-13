@@ -10,7 +10,7 @@ import { QuantityInput } from "@/src/components/QuantityInput/QuantityInput";
 export interface ProductProps {
     product: {
         id: string;
-        name: string;
+        name: string; 
         imageUrl: string;
         price: number;
         description: string;
@@ -19,14 +19,14 @@ export interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-    const { onAdd, decQty, incQty, qty } = useCart()
+    const { onAdd, decQty, incQty, qty, cartItems } = useCart()
 
     return (
         <>
             <Head>
                 <title>{product.name} | Ignite shop</title>
             </Head>
-
+        
             <ProductContainer>
                 <ImageContainer>
                     <Image src={product.imageUrl} width={520} height={480} alt="" />
@@ -42,7 +42,13 @@ export default function Product({ product }: ProductProps) {
                         Quantidade: <QuantityInput quantity={qty} onDecrease={decQty} onIncrease={incQty}/>
                     </section>
 
-                    <Button size='large'>
+                    <Button 
+                        size='large' 
+                        onClick={() => {
+                            onAdd(product.id, qty)
+                            console.log(cartItems)
+                        }}
+                    >
                         Colocar na sacola
                     </Button>
                 </ProductDetails>

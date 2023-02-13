@@ -2,26 +2,31 @@ import type { AppProps } from 'next/app'
 import { globalStyles } from '../styles/global';
 
 import logoImg from '../assets/logo.svg';
-import { Container, Header } from '../styles/pages/app';
+import { Container, Header, StyledModal } from '../styles/pages/app';
 
-import Image from 'next/image';
 import { Handbag } from 'phosphor-react';
 import { ToastContainer } from 'react-toastify'
-import { useState } from 'react';
-import Link from 'next/link';
-import { StateContextProvider } from '../context/StateContext';
-import { useCart } from '../hook/useCart';
 import { ShoppingBag } from '../components/ShoppingBag';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { StateContextProvider } from '../context/StateContext';
+import { css } from '../styles';
+import { useCart } from '../hook/useCart';
 
 globalStyles()
 
 export default function App({ Component, pageProps }: AppProps) {
   const [ list, setList ] = useState(1)
-  const { showCart } = useCart()
+  const { showCart, setShowCart, totalQuantities } = useCart()
+
+  
 
   return (
-      <StateContextProvider>
-        <Container>
+    <StateContextProvider>
+        <Container >
             <ToastContainer 
                 position="top-right"
                 autoClose={5000}
@@ -38,13 +43,22 @@ export default function App({ Component, pageProps }: AppProps) {
               <Link href='/'>
                 <Image src={logoImg} alt='' />
               </Link>
-              <button disabled={list == 0}>
+              <button disabled={totalQuantities == 0} onClick={() => setShowCart(true)} >
                 <Handbag size={24} weight="bold" />
-                {list >= 1 ? (
-                  <span>{list}</span>
+                {totalQuantities >= 1 ? (
+                  <span>{totalQuantities}</span>
                   ) : <></>}
+                  
+                {/* <StyledModal
+                  isOpen={showCart}
+                  onRequestClose={() => setShowCart(false)}
+                  shouldCloseOnOverlayClick={true}
+                  ariaHideApp={false}
+                >
+                  <ShoppingBag/>
+                </StyledModal> */}
               </button>
-              {showCart === true && <ShoppingBag />}
+              
             </Header>
             <Component {...pageProps} />
         </Container>

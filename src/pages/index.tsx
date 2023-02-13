@@ -8,6 +8,7 @@ import { Handbag } from 'phosphor-react';
 import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
+import { useCart } from '../hook/useCart'
 
 interface HomeProps {
   products: {
@@ -19,11 +20,12 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+  const { onAdd } = useCart()
   const [sliderRef] = useKeenSlider({
     mode: "free-snap",
     slides: {
-      perView: 1.95,
-      spacing: 48,
+      perView: 2.83,
+      spacing: 45,
     }
   })
 
@@ -46,7 +48,7 @@ export default function Home({ products }: HomeProps) {
                     <span>{product.price}</span>
                   </div>
 
-                  <button>
+                  <button >
                     <Handbag size={24} weight="bold" />
                   </button>
                 </footer>

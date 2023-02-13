@@ -1,4 +1,5 @@
 import { styled } from '..'
+import Modal from 'react-modal';
 
 export const Container = styled('div', {
     display: 'flex',
@@ -46,3 +47,36 @@ export const Header = styled('header', {
         }
     }
 })
+
+export const StyledModal = styled(Modal, {
+    height: '100vh',
+    position: 'fixed',
+    zIndex: '40',
+    width: "30%",
+    backgroundColor: '$gray800',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    boxShadow: '-4px 0px 30px 0px #000000CC',
+
+    '&:overlay-modal': {
+        position: 'fixed',
+        width: "70%",
+        top: 0,
+        left: 0,
+        bottom: 0,
+        backgroundColor: 'red',
+    }
+})
+
+export const OverlayModal = {
+    overlay: {
+
+        position: 'fixed',
+            width: "70%",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            backgroundColor: 'red',
+    }
+}

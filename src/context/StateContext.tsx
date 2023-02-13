@@ -1,22 +1,30 @@
+import axios from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { ProductProps } from "../pages/product/[id]";
+import { toast } from "react-toastify";
+
+interface CartItems {
+    id: string;
+    name: string;
+    imageUrl: string;
+    price: number;
+    description: string;
+    defaultPriceId: string;
+}
 
 interface StateContextType {
-    cartItems: ProductProps[];
     showCart: boolean;
+    setShowCart: (value: boolean) => void;
+    cartItems: CartItems[];
     totalPrice: number;
-    totalQuantity: number;
+    totalQuantities: number;
     qty: number;
     incQty: () => void;
     decQty: () => void;
-    onAdd: (product: string, quantity?: number) => void
-}
-
-interface ItemProps {
-    item: {
-        id: string
-        quantity: number;
-    }
+    toggleCartItemQuantity: (id: string, value: 'inc' | 'dec') => void;
+    onAdd: (product: any, quantity: number) => void;
+    setCartItems: (items: Array<any>) => void;
+    setTotalPrice: (price: number) => void;
+    setTotalQuantities: (quantities: number) => void;
 }
 
 interface StateContextProviderProps {
@@ -26,25 +34,54 @@ interface StateContextProviderProps {
 export const StateContext = createContext({} as StateContextType)
 
 export function StateContextProvider({children}: StateContextProviderProps) {
-    const [showCart, setShowCart] = useState(false);
-    const [cartItems, setCartItems] = useState<[]>([])
+    const [showCart, setShowCart] = useState<boolean>(false);
+    const [cartItems, setCartItems] = useState<Array<any>>([])
     const [totalPrice, setTotalPrice] = useState<number>(0)
-    const [totalQuantity, setTotalQuantity] = useState<number>(0)
+    const [totalQuantities, setTotalQuantities] = useState<number>(0)
     const [qty, setQty] = useState<number>(1)
 
-    const onAdd = ( quantity = 0, { product }: ProductProps) => {
-        const checkProductInCart = cartItems.find(({item}: ItemProps) => item.id === product.id)
+    let foundProduct: any;
+    let index;
+
+    const onAdd = ( product: any, quantity: number) => {
+        const checkProductInCart = cartItems.find((item) => item.id === product.id)
 
         if(checkProductInCart){
             setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity)
-            setTotalQuantity((prevTotalQuantity) => prevTotalQuantity + quantity)
+            setTotalQuantities((prevTotalQuantity) => prevTotalQuantity + quantity)
 
-            const updatedCartItems = cartItems.map(({item}: ItemProps) => {
+            const updatedCartItems = cartItems.map((item) => {
                 if(item.id === product.id) return {
                     ...item,
                     quantity: item.quantity + quantity
                 }
             })
+
+            setCartItems(updatedCartItems)
+        } else {
+            product.quantity = quantity
+
+            setCartItems([...cartItems, {...product}])
+        }
+
+        toast.success(`${qty} ${product.name} adicionado ao carrinho`)
+    }
+
+    const toggleCartItemQuantity = (id: string, value: 'inc' | 'dec') => {
+        foundProduct = cartItems.find((item) => item._id === id)
+        index = cartItems.findIndex((product) => product._id === id);
+        const newCartItems = cartItems.filter((item) => item._id !== id)
+    
+        if(value === 'inc') {
+          setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 } ]);
+          setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
+          setTotalQuantities(prevTotalQuantities => prevTotalQuantities + 1)
+        } else if(value === 'dec') {
+          if (foundProduct.quantity > 1) {
+            setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 } ]);
+            setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
+            setTotalQuantities(prevTotalQuantities => prevTotalQuantities - 1)
+          }
         }
     }
 
@@ -62,15 +99,20 @@ export function StateContextProvider({children}: StateContextProviderProps) {
 
     return (
         <StateContext.Provider 
-            value={{
+            value={{     
                 showCart,
+                setShowCart,
                 cartItems,
-                totalPrice,
-                totalQuantity,
+                totalPrice, 
+                totalQuantities,
                 qty,
                 incQty,
                 decQty,
-                onAdd(product, quantity) {},
+                onAdd,
+                toggleCartItemQuantity,
+                setCartItems,
+                setTotalPrice,
+                setTotalQuantities 
             }}
         >
             {children}
