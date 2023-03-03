@@ -113,3 +113,12 @@ export const Button = styled('button', {
     }
 
 })
+
+export const LoadingContainer = styled('div', {
+    maxHeight: '100vh',
+    width: '100vw',
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+})

@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
+import { ProductProps } from "../pages/product/[id]";
 
 
 export interface IProduct {

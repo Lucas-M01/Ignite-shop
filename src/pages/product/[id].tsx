@@ -2,8 +2,13 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Stripe from "stripe";
 import { stripe } from "../../lib/stripe";
-import { Button, ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
+import { Button, ImageContainer, LoadingContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
 import Head from "next/head";
+import { MouseEvent, useContext } from "react";
+import { IProduct, ShopContext } from "@/src/context/ShopContext";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { formatCurrency } from "@/src/utils/formateCurrency";
 
 export interface ProductProps {
     product: {
@@ -17,6 +22,23 @@ export interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+    const { addCart } = useContext(ShopContext)
+
+    const handleAddCart = (event: MouseEvent<HTMLButtonElement>, product: IProduct ) => {
+        event.preventDefault();
+        // addCart(product)
+        toast.success("Produto adicionado")
+      }
+
+    const { isFallback } = useRouter()
+
+    if (isFallback) {
+        return (
+            <LoadingContainer>
+                <h1>Loading ...</h1>
+            </LoadingContainer>
+        )
+    }
 
     return (
         <>
@@ -41,10 +63,8 @@ export default function Product({ product }: ProductProps) {
 
                     <Button 
                         size='large' 
-                        // onClick={() => {
-                        //     onAdd(product.id, qty)
-                        //     console.log(cartItems)
-                        // }}
+                        // onClick={(event) => handleAddCart(event, product)}
+                        title='Adicionar ao carinho'
                     >
                         Colocar na sacola
                     </Button>
@@ -76,10 +96,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
                 id: product.id,
                 name: product.name,
                 imageUrl: product.images[0],
-                price: new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                }).format(price.unit_amount! / 100),
+                price: formatCurrency.format(price.unit_amount! / 100),
                 description: product.description,
                 defaultPriceId: price.id,
             },
