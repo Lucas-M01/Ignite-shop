@@ -4,8 +4,6 @@ import Stripe from "stripe";
 import { stripe } from "../../lib/stripe";
 import { Button, ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
 import Head from "next/head";
-import { useCart } from "@/src/hook/useCart";
-import { QuantityInput } from "@/src/components/QuantityInput/QuantityInput";
 
 export interface ProductProps {
     product: {
@@ -19,7 +17,6 @@ export interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-    const { onAdd, decQty, incQty, qty, cartItems } = useCart()
 
     return (
         <>
@@ -39,15 +36,15 @@ export default function Product({ product }: ProductProps) {
                     <p>{product.description}</p>
 
                     <section>
-                        Quantidade: <QuantityInput quantity={qty} onDecrease={decQty} onIncrease={incQty}/>
+                        {/* Quantidade: <QuantityInput quantity={qty} onDecrease={decQty} onIncrease={incQty}/> */}
                     </section>
 
                     <Button 
                         size='large' 
-                        onClick={() => {
-                            onAdd(product.id, qty)
-                            console.log(cartItems)
-                        }}
+                        // onClick={() => {
+                        //     onAdd(product.id, qty)
+                        //     console.log(cartItems)
+                        // }}
                     >
                         Colocar na sacola
                     </Button>

@@ -8,26 +8,31 @@ import { Handbag } from 'phosphor-react';
 import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
-import { useCart } from '../hook/useCart'
+import { IProduct, ShopContext } from '../context/ShopContext';
+import { MouseEvent, useContext } from 'react';
+import { toast } from 'react-toastify'
+import { formatCurrency } from '../utils/formateCurrency'
 
 interface HomeProps {
-  products: {
-    id: string;
-    name: string;
-    imageUrl: string;
-    price: string;
-  }[]
+  products: IProduct[]
 }
 
 export default function Home({ products }: HomeProps) {
-  const { onAdd } = useCart()
+  const { addCart } = useContext(ShopContext)
+
   const [sliderRef] = useKeenSlider({
     mode: "free-snap",
     slides: {
-      perView: 2.83,
+      perView: 1.8,
       spacing: 45,
     }
   })
+
+  const handleAddCart = (event: MouseEvent<HTMLButtonElement>, product: IProduct ) => {
+    event.preventDefault();
+    addCart(product)
+    toast.success("Produto adicionado")
+  }
 
   return (
     <>
@@ -48,7 +53,11 @@ export default function Home({ products }: HomeProps) {
                     <span>{product.price}</span>
                   </div>
 
-                  <button >
+                  <button 
+                    type='button'
+                    onClick={(event) => handleAddCart(event, product)}
+                    title='Adicionar ao carinho'
+                  >
                     <Handbag size={24} weight="bold" />
                   </button>
                 </footer>
@@ -73,10 +82,9 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(price.unit_amount! / 100),
+      price: formatCurrency.format(price.unit_amount! / 100),
+      numberPrice: price.unit_amount! / 100,
+      defaultPriceId: price.id,
     }
   })
 
