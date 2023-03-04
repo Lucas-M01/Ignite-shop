@@ -2,14 +2,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
-import { HomeContainer, Product } from '../styles/pages/home'
+import { ArrowContainer, HomeContainer, Product } from '../styles/pages/home'
 import { GetStaticProps } from 'next'
-import { Handbag } from 'phosphor-react';
+import { CaretLeft, CaretRight, Handbag } from 'phosphor-react';
 import { stripe } from '../lib/stripe'
 import Stripe from 'stripe'
 import Link from 'next/link'
 import { IProduct, ShopContext } from '../context/ShopContext';
-import { MouseEvent, useContext } from 'react';
+import { MouseEvent, useContext, useState } from 'react';
 import { toast } from 'react-toastify'
 import { formatCurrency } from '../utils/formateCurrency'
 
@@ -18,14 +18,30 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [loaded, setLoaded] = useState(false)
+
   const { addCart } = useContext(ShopContext)
 
-  const [sliderRef] = useKeenSlider({
-    mode: "free-snap",
+  const [sliderRef, instanceRef] = useKeenSlider({
+    mode: "snap",
+    initial: 0,
     slides: {
-      perView: 1.8,
+      perView: (() => {
+        if(currentSlide > 0){
+          return 2.8
+        }
+        return 1.8
+      }),
       spacing: 45,
-    }
+    },
+    slideChanged(slider){
+      setCurrentSlide(slider.track.details.rel)
+    },
+    created() {
+      setLoaded(true)
+    },
+    
   })
 
   const handleAddCart = (event: MouseEvent<HTMLButtonElement>, product: IProduct ) => {
@@ -40,11 +56,16 @@ export default function Home({ products }: HomeProps) {
         <title>Home | Ignite shop</title>
       </Head>
 
-      <HomeContainer ref={sliderRef} className="keen-slider">
+        <ArrowContainer arrow='left'>
+          <button onClick={(e: any) => e.stopPropagation() || instanceRef.current?.prev()} disabled={currentSlide === 0} >
+            <CaretLeft size={48} />
+          </button>
+        </ArrowContainer>
+      <HomeContainer ref={sliderRef} size={currentSlide == 0 ? 'default' : 'left' } className="keen-slider">
       {products.map(product => {
           return (
             <Link href={`/product/${product.id}`} key={product.id} prefetch={false} >
-              <Product className="keen-slider__slide" >
+              <Product className="keen-slider__slide"  >
                 <Image src={product.imageUrl} alt="" width={520} height={480} />
 
                 <footer>
@@ -65,7 +86,21 @@ export default function Home({ products }: HomeProps) {
             </Link>
           )
         })}
+
       </HomeContainer>
+        {loaded && instanceRef.current && (
+            <ArrowContainer arrow='right' >
+              <button onClick={(e: any) =>
+                e.stopPropagation() || instanceRef.current?.next()
+              }
+              disabled={
+                currentSlide ===
+                instanceRef.current.track.details.slides.length - 1
+              }>
+                <CaretRight size={48} />
+              </button>
+            </ArrowContainer>
+        )}
     </>
   )
 }

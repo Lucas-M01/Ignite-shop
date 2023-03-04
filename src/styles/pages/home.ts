@@ -2,9 +2,17 @@ import { styled } from "..";
 
 export const HomeContainer = styled('main', {
     display: 'flex',
-    width: '100%',
-    maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
-    marginLeft: 'auto',
+    variants: {
+        size: {
+            default: {     
+                maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
+                marginLeft: 'auto',
+            },
+            left: {
+                transform: 'translate()',
+            }
+        }
+    }
 })
 
 export const Product = styled('div', {
@@ -79,6 +87,50 @@ export const Product = styled('div', {
         footer: {
             transform: 'translateY(0%)',
             opacity: 1,
+        }
+    }
+})
+
+export const ArrowContainer = styled('div', {
+    width: '8.5rem',
+    height: '100vh',
+    position: 'absolute',
+    zIndex: 1,
+    background: 'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
+
+    button: {
+        background: 'transparent',
+        border: 0,
+        position: 'absolute',
+        cursor: 'pointer',
+
+        '&:disabled': {
+            opacity: 0
+        },
+        
+        svg: {
+            color: '$gray300',
+        }
+    },
+    
+    variants: {
+        arrow: {
+            left: {
+                transform: 'matrix(-1, 0, 0, 1, 0, 0)',
+                button: {
+                    left: 0,
+                    top: '50%',
+                    transform: 'matrix(-1, 0, 0, 1, 0, 0)',
+                }
+            },
+            right: {
+                right: 0,
+                button: {
+                    top: '50%',
+                    
+                    right: 0,
+                }
+            }
         }
     }
 })
