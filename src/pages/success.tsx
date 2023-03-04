@@ -35,7 +35,7 @@ export default function Success({ customerName, product, productsImages }: Succe
         <h1>Comprar efetuada!</h1>
         <p>
           Uhuul <strong>{customerName}</strong>, 
-          sua compra de <strong>{`${productsImages.length} Camisetas`} </strong> já está a caminho da sua casa.
+          sua compra de <strong>{`${productsImages.length} camiseta(s)`} </strong> já está a caminho da sua casa.
         </p>
 
         <Link href="/">
@@ -68,11 +68,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const product = item.price!.product as Stripe.Product;
     return product.images[0];
   });
+  
+  const items = session.line_items!.data.map((item) => {
+    const product = item.quantity
+    return product
+  })
 
   return {
     props: {
       customerName,
       productsImages,
+      items
     },
   };
 };

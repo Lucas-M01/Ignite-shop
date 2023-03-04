@@ -6,6 +6,7 @@ export const CartContainer = styled(Dialog.Content ,{
   top: 0,
   right: 0,
   bottom: 0, 
+  zIndex: 1,
 
   width: '25rem',
   padding: '4rem 3rem 3rem',

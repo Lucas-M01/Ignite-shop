@@ -15,7 +15,8 @@ export interface ProductProps {
         id: string;
         name: string; 
         imageUrl: string;
-        price: number;
+        price: string;
+        numberPrice: number;
         description: string;
         defaultPriceId: string;
     }
@@ -26,7 +27,7 @@ export default function Product({ product }: ProductProps) {
 
     const handleAddCart = (event: MouseEvent<HTMLButtonElement>, product: IProduct ) => {
         event.preventDefault();
-        // addCart(product)
+        addCart(product)
         toast.success("Produto adicionado")
       }
 
@@ -57,13 +58,9 @@ export default function Product({ product }: ProductProps) {
 
                     <p>{product.description}</p>
 
-                    <section>
-                        {/* Quantidade: <QuantityInput quantity={qty} onDecrease={decQty} onIncrease={incQty}/> */}
-                    </section>
-
                     <Button 
                         size='large' 
-                        // onClick={(event) => handleAddCart(event, product)}
+                        onClick={(event) => handleAddCart(event, product)}
                         title='Adicionar ao carinho'
                     >
                         Colocar na sacola
@@ -98,6 +95,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
                 imageUrl: product.images[0],
                 price: formatCurrency.format(price.unit_amount! / 100),
                 description: product.description,
+                numberPrice: price.unit_amount! / 100,
                 defaultPriceId: price.id,
             },
         },
