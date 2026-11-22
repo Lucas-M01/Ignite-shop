@@ -1,56 +1,76 @@
-# 🛒 Ignite Shop
+<h1 align="center">🛒 Ignite Shop</h1>
 
-Uma aplicação para gerenciar um carrinho de compras de uma loja de roupas fictícia desenvolvida durante o <strong>quarto</strong> desafio do Ignite, bootcamp 
-da [Rocketseat](https://www.rocketseat.com.br/ "Site da rocketseat"), especificamente, da Trilha de ReactJS. O projeto foi desenvolvido a partir de um template 
-previamente disponibilizado no figma [Ignite Shop](https://www.figma.com/file/FxlDRKOmznBbTH8DsTgnZU/Ignite-Shop-2.0/duplicate "Template do Ignite Shop").
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/82176047/223178716-32d3a2c2-3abf-4f1b-9334-6e41366d758d.png" width="500" alt="Prévia do Ignite Shop" />
+</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/82176047/223178716-32d3a2c2-3abf-4f1b-9334-6e41366d758d.png" width="500"/>
+Aplicação para gerenciar o carrinho de compras de uma loja de roupas fictícia, desenvolvida no **quarto desafio** do Ignite, bootcamp da [Rocketseat](https://www.rocketseat.com.br/), na trilha de ReactJS.
 
- ## 🔧 Funcionalidades
-  <ul>
-    <li>Listagem de produtos (camisas) pegas da API do Stripe</li>
-    <li>Adicionar itens na sacola</li>
-    <li>Exibir o total de itens na sacola de compras no Header</li>
-    <li>Exibir o valor total da soma de itens na sacola</li>
-    <li>Acessar a rota de checkout com todos os itens selecionados e efetuar a compra</li>
-  </ul>
- 
- ## 💻 Tecnologias
-Esse projeto foi desenvolvido com as seguintes tecnologias:
+O projeto foi construído a partir de um [template do Figma](https://www.figma.com/file/FxlDRKOmznBbTH8DsTgnZU/Ignite-Shop-2.0/duplicate) disponibilizado pela Rocketseat.
+
+## 🔧 Funcionalidades
+
+- Listagem de produtos (camisas) obtidos da API do Stripe
+- Adição de itens à sacola
+- Exibição da quantidade de itens da sacola no header
+- Exibição do valor total dos itens da sacola
+- Checkout com todos os itens selecionados e finalização da compra
+
+## 💻 Tecnologias
 
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org)
-- [Next](https://nextjs.org/)
+- [Next.js](https://nextjs.org/)
 - [Stitches](https://stitches.dev/)
 - [Stripe](https://stripe.com/en-br)
 - [Radix UI](https://www.radix-ui.com/)
-- [Kenn-Slider](https://keen-slider.io/)
+- [Keen Slider](https://keen-slider.io/)
 - [Axios](https://axios-http.com/docs/intro)
 - [Phosphor Icons](https://phosphoricons.com/)
 - [React Toastify](https://fkhadra.github.io/react-toastify/introduction)
 
-## ⚙ Como executar
+## ⚙️ Como executar
 
-Clone o repositório e acesse a pasta.
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) instalado
+- Uma conta no [Stripe](https://dashboard.stripe.com/register) com produtos cadastrados em **modo de teste**
+
+### Instalação
 
 ```bash
-$ git clone https://github.com/Lucas-M01/Ignite-shop.git
+# Clonar o repositório
+git clone https://github.com/Lucas-M01/Ignite-shop.git
+
+# Acessar a pasta do projeto
+cd Ignite-shop
+
+# Instalar as dependências
+npm install
 ```
 
-#### Iniciar o Projeto:
+### Variáveis de ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto com o conteúdo abaixo:
+
+```env
+STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxx
+NEXT_URL=http://localhost:3000
+```
+
+- `STRIPE_SECRET_KEY`: chave secreta de teste, disponível em [Developers → API keys](https://dashboard.stripe.com/test/apikeys) no dashboard do Stripe.
+- `NEXT_URL`: URL base da aplicação, usada nas URLs de sucesso e cancelamento do checkout. Deve incluir `http://` ou `https://`, sem barra no final.
+
+> ⚠️ Nunca envie o `.env.local` para o GitHub.
+
+### Executando
 
 ```bash
-# Instalar as dependências
-$ npm install
-
-# Iniciar o projeto
-$ npm run dev
-
+npm run dev
 # ou
 yarn dev
-  
 # ou
 pnpm dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+Acesse [http://localhost:3000](http://localhost:3000) no navegador.
